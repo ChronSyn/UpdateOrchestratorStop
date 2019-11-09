@@ -1,5 +1,5 @@
 ﻿# UpdateOrchestratorStop
-[ALPHA] Stops Windows Update from waking up your PC
+[ALPHA] Stops Windows Update from waking up your PC (or at least, it tries to)
 
 ##
 
@@ -28,6 +28,8 @@ This program runs as a desktop app and can be minimized to the notification area
 You can also `Monitor Service` which will continually monitor the service and stop it from running. You should check this check box and then click the Stop button if you wish to use this functionality.
 
 You can also `Watch for Suspend` which will attempt to stop the service as Windows is going into suspend mode.
+
+##
 
 #### DISCLAIMER
 
