@@ -41,7 +41,7 @@ Additionally, we make no warranty that:
  - The quality of the software will meet your expectations.
  
  
-The links to third-party software and the related documentation made available on this website are subject to the following conditions:
+The links to software and the related documentation made available on this website are subject to the following conditions:
 
  - The software could include technical or other mistakes, inaccuracies or typographical errors.
  - The software may be out of date, and we make no commitment to update such materials.
