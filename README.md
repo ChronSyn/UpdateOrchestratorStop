@@ -29,4 +29,6 @@ You can also `Monitor Service` which will continually monitor the service and st
 
 You can also `Watch for Suspend` which will attempt to stop the service as Windows is going into suspend mode.
 
+##
+
 [![forthebadge](https://forthebadge.com/images/badges/built-with-resentment.svg)](https://forthebadge.com)
