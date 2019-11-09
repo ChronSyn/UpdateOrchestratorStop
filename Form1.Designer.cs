@@ -36,6 +36,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.cb_MonitorSuspend = new System.Windows.Forms.CheckBox();
             this.tmr_suspendMonitor = new System.Windows.Forms.Timer(this.components);
+            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.btn_disclaimer = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnStart
@@ -124,11 +126,36 @@
             this.tmr_suspendMonitor.Interval = 250;
             this.tmr_suspendMonitor.Tick += new System.EventHandler(this.tmr_suspendMonitor_Tick);
             // 
+            // linkLabel1
+            // 
+            this.linkLabel1.AutoSize = true;
+            this.linkLabel1.Location = new System.Drawing.Point(9, 395);
+            this.linkLabel1.Name = "linkLabel1";
+            this.linkLabel1.Size = new System.Drawing.Size(266, 13);
+            this.linkLabel1.TabIndex = 7;
+            this.linkLabel1.TabStop = true;
+            this.linkLabel1.Text = "https://github.com/ChronSyn/UpdateOrchestratorStop";
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+            // 
+            // btn_disclaimer
+            // 
+            this.btn_disclaimer.Location = new System.Drawing.Point(12, 266);
+            this.btn_disclaimer.Name = "btn_disclaimer";
+            this.btn_disclaimer.Size = new System.Drawing.Size(271, 108);
+            this.btn_disclaimer.TabIndex = 9;
+            this.btn_disclaimer.Text = "Disclaimer\r\n\r\n(You agree to this if using, downloading, installing, compiling, de" +
+    "compiling, reverse engineering, modifying, editing, copying or transferring this" +
+    " software)";
+            this.btn_disclaimer.UseVisualStyleBackColor = true;
+            this.btn_disclaimer.Click += new System.EventHandler(this.btn_disclaimer_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(289, 266);
+            this.ClientSize = new System.Drawing.Size(289, 433);
+            this.Controls.Add(this.btn_disclaimer);
+            this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.cb_MonitorSuspend);
             this.Controls.Add(this.label1);
@@ -158,6 +185,8 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.CheckBox cb_MonitorSuspend;
         private System.Windows.Forms.Timer tmr_suspendMonitor;
+        private System.Windows.Forms.LinkLabel linkLabel1;
+        private System.Windows.Forms.Button btn_disclaimer;
     }
 }
 
