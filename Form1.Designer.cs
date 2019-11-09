@@ -76,9 +76,9 @@
             this.cb_ToggleTimer.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cb_ToggleTimer.Location = new System.Drawing.Point(12, 100);
             this.cb_ToggleTimer.Name = "cb_ToggleTimer";
-            this.cb_ToggleTimer.Size = new System.Drawing.Size(88, 17);
+            this.cb_ToggleTimer.Size = new System.Drawing.Size(100, 17);
             this.cb_ToggleTimer.TabIndex = 2;
-            this.cb_ToggleTimer.Text = "Enable Timer";
+            this.cb_ToggleTimer.Text = "Monitor Service";
             this.cb_ToggleTimer.UseVisualStyleBackColor = true;
             // 
             // label1
@@ -87,10 +87,10 @@
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(9, 120);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(275, 39);
+            this.label1.Size = new System.Drawing.Size(262, 39);
             this.label1.TabIndex = 3;
-            this.label1.Text = "If checked, the timer will attempt stop the service every 2\r\nminutes. This will o" +
-    "nly activate after clicking the Stop\r\nbutton.";
+            this.label1.Text = "If checked, this app will continually attempt to stop the\r\nservice automatically." +
+    " However, this monitoring will\r\nonly begin once you click the Stop button.";
             // 
             // label3
             // 
