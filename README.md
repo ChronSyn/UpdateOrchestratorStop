@@ -22,4 +22,11 @@ Further changes may be needed if this isn't sufficient to stop this problem.
 
 This is a heavy-handed approach, but while Microsoft refuse to accept and fix the problem, I will take matters into my own hands.
 
+#### Usage
+This program runs as a desktop app and can be minimized to the notification area. If you want to start the Windows update orchestrator service, there's a button for that. If you want to stop it, there's a button for that.
+
+You can also `Monitor Service` which will continually monitor the service and stop it from running. You should check this check box and then click the Stop button if you wish to use this functionality.
+
+You can also `Watch for Suspend` which will attempt to stop the service as Windows is going into suspend mode.
+
 [![forthebadge](https://forthebadge.com/images/badges/built-with-resentment.svg)](https://forthebadge.com)
