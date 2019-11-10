@@ -16,11 +16,13 @@ Stressful: Being woken up at 1:30am because my PC has decided to wake itself up,
 Dangerous: Finding a laptop inside a bag has woken itself from sleep and is now overheating, potentially starting a fire.
 
 #### The solution
-An open source project that runs on any Windows PC with .net 3.5 or later, and attempts to stop the Windows update service. Note that this has only been tested on Windows 10 1903, should work on Windows 8 and 8.1, and probably won't work on Windows 7.
+An open source project that runs on any Windows PC with .net 3.5 or later, and attempts to stop the Windows update service. As of version 1.0.3-alpha, it also attempts to disable all scheduled tasks associated with UpdateOrchestratory. Note that this has only been tested on Windows 10 1903, should work on Windows 8 and 8.1, and probably won't work on Windows 7.
 
 Further changes may be needed if this isn't sufficient to stop this problem.
 
-This is a heavy-handed approach, but while Microsoft refuse to accept and fix the problem, I will take matters into my own hands.
+This is a heavy-handed approach, but while Microsoft refuse to accept and fix the problem, I will take matters into my own hands. If you're totally against the idea of disabling many of the things associated with Windows update, you probably don't want to use this program. If, like me, you're at the point where you're close to throwing your PC out of the Window because of the incompetence of Microsoft, and you don't care how the problem is solved, this program should help.
+
+Even if you know how to fix these problems manually, I figured that automating the process and not having to worry about it (hopefully) should save you some time.
 
 #### Usage
 This program runs as a desktop app and can be minimized to the notification area. If you want to start the Windows update orchestrator service, there's a button for that. If you want to stop it, there's a button for that.
