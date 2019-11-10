@@ -38,11 +38,13 @@
             this.tmr_suspendMonitor = new System.Windows.Forms.Timer(this.components);
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.btn_disclaimer = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.cb_monitorScheduledTasks = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(12, 8);
+            this.btnStart.Location = new System.Drawing.Point(7, 8);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(125, 73);
             this.btnStart.TabIndex = 0;
@@ -52,7 +54,7 @@
             // 
             // btnStop
             // 
-            this.btnStop.Location = new System.Drawing.Point(153, 8);
+            this.btnStop.Location = new System.Drawing.Point(148, 8);
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(125, 73);
             this.btnStop.TabIndex = 1;
@@ -62,7 +64,7 @@
             // 
             // tmr_stop
             // 
-            this.tmr_stop.Interval = 2500;
+            this.tmr_stop.Interval = 15000;
             this.tmr_stop.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // notifyIcon1
@@ -76,7 +78,7 @@
             this.cb_ToggleTimer.AutoSize = true;
             this.cb_ToggleTimer.Checked = true;
             this.cb_ToggleTimer.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cb_ToggleTimer.Location = new System.Drawing.Point(12, 100);
+            this.cb_ToggleTimer.Location = new System.Drawing.Point(7, 100);
             this.cb_ToggleTimer.Name = "cb_ToggleTimer";
             this.cb_ToggleTimer.Size = new System.Drawing.Size(100, 17);
             this.cb_ToggleTimer.TabIndex = 2;
@@ -87,7 +89,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(9, 120);
+            this.label1.Location = new System.Drawing.Point(4, 120);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(262, 39);
             this.label1.TabIndex = 3;
@@ -98,20 +100,18 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(9, 198);
+            this.label3.Location = new System.Drawing.Point(4, 312);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(274, 52);
+            this.label3.Size = new System.Drawing.Size(277, 52);
             this.label3.TabIndex = 6;
-            this.label3.Text = "If you watch for suspend, this app will attempt to stop the\r\nservice just before " +
-    "Windows suspends. This event\r\nlistener will be active or disabled as soon as you" +
-    " check\r\nor uncheck this checkbox.";
+            this.label3.Text = resources.GetString("label3.Text");
             // 
             // cb_MonitorSuspend
             // 
             this.cb_MonitorSuspend.AutoSize = true;
             this.cb_MonitorSuspend.Checked = true;
             this.cb_MonitorSuspend.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cb_MonitorSuspend.Location = new System.Drawing.Point(12, 178);
+            this.cb_MonitorSuspend.Location = new System.Drawing.Point(7, 292);
             this.cb_MonitorSuspend.Name = "cb_MonitorSuspend";
             this.cb_MonitorSuspend.Size = new System.Drawing.Size(118, 17);
             this.cb_MonitorSuspend.TabIndex = 5;
@@ -129,7 +129,7 @@
             // linkLabel1
             // 
             this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(9, 395);
+            this.linkLabel1.Location = new System.Drawing.Point(7, 514);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(266, 13);
             this.linkLabel1.TabIndex = 7;
@@ -139,7 +139,7 @@
             // 
             // btn_disclaimer
             // 
-            this.btn_disclaimer.Location = new System.Drawing.Point(12, 266);
+            this.btn_disclaimer.Location = new System.Drawing.Point(7, 395);
             this.btn_disclaimer.Name = "btn_disclaimer";
             this.btn_disclaimer.Size = new System.Drawing.Size(271, 108);
             this.btn_disclaimer.TabIndex = 9;
@@ -149,11 +149,37 @@
             this.btn_disclaimer.UseVisualStyleBackColor = true;
             this.btn_disclaimer.Click += new System.EventHandler(this.btn_disclaimer_Click);
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(4, 207);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(257, 52);
+            this.label2.TabIndex = 11;
+            this.label2.Text = "If checked, this app will continually attempt to disable\r\nall updateOrchestrator " +
+    "scheduled tasks. However,\r\nthis monitoring will only begin once you click the\r\nS" +
+    "top button.";
+            // 
+            // cb_monitorScheduledTasks
+            // 
+            this.cb_monitorScheduledTasks.AutoSize = true;
+            this.cb_monitorScheduledTasks.Checked = true;
+            this.cb_monitorScheduledTasks.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cb_monitorScheduledTasks.Location = new System.Drawing.Point(7, 187);
+            this.cb_monitorScheduledTasks.Name = "cb_monitorScheduledTasks";
+            this.cb_monitorScheduledTasks.Size = new System.Drawing.Size(147, 17);
+            this.cb_monitorScheduledTasks.TabIndex = 10;
+            this.cb_monitorScheduledTasks.Text = "Monitor Scheduled Tasks";
+            this.cb_monitorScheduledTasks.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(289, 433);
+            this.ClientSize = new System.Drawing.Size(287, 542);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.cb_monitorScheduledTasks);
             this.Controls.Add(this.btn_disclaimer);
             this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.label3);
@@ -187,6 +213,8 @@
         private System.Windows.Forms.Timer tmr_suspendMonitor;
         private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.Button btn_disclaimer;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.CheckBox cb_monitorScheduledTasks;
     }
 }
 

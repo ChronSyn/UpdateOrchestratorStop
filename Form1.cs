@@ -4,7 +4,7 @@ using System.Threading;
 using System.Linq;
 using System.Windows.Forms;
 using Microsoft.Win32;
-
+using System.Diagnostics;
 
 namespace UpdateOrchestratorStop
 {
@@ -28,6 +28,9 @@ namespace UpdateOrchestratorStop
                 case PowerModes.Suspend:
                     if (cb_MonitorSuspend.Checked) {
                         checkAndStopSvc(_SvcName);
+                    }
+                    if (cb_monitorScheduledTasks.Checked) {
+                        disableScheduledTasks();
                     }
                     break;
             }
@@ -100,6 +103,7 @@ namespace UpdateOrchestratorStop
             if (serviceExists(_SvcName)) {
                 StartService(_SvcName, 10000);
             }
+            disableScheduledTasks();
         }
 
         private Boolean checkAndStopSvc(String svcName) {
@@ -109,12 +113,28 @@ namespace UpdateOrchestratorStop
             return GetServiceStatus(_SvcName) == "Running";
         }
 
+        private void disableScheduledTasks() {
+            // psexec.exe -i -s "%SystemRoot%\system32\WindowsPowerShell\v1.0\powershell.exe" "Get-ScheduledTask -TaskPath "\Microsoft\Windows\UpdateOrchestrator\" | Disable-ScheduledTask"
+            String args = "-i -s '%SystemRoot%\\system32\\WindowsPowerShell\\v1.0\\powershell.exe' 'Get-ScheduledTask -TaskPath '\\Microsoft\\Windows\\UpdateOrchestrator\\' | Disable-ScheduledTask'";
+            ProcessStartInfo psi = new ProcessStartInfo();
+            psi.FileName = "psexec.exe";
+            psi.UseShellExecute = false;
+            psi.CreateNoWindow = true;
+            psi.RedirectStandardOutput = true;
+            psi.RedirectStandardError = true;
+            psi.RedirectStandardInput = true;
+            psi.Arguments = args;
+            Process proc = Process.Start(psi);
+            //System.Diagnostics.Process.Start("psexec.exe", args);
+        }
+
         private void timer1_Tick(object sender, EventArgs e) {
             String svcName = _SvcName;
             while (checkAndStopSvc(svcName)) {
                 Thread.Sleep(500);
                 checkAndStopSvc(svcName);
             };
+            disableScheduledTasks();
         }
 
         private void btnStop_Click(object sender, EventArgs e) {
@@ -122,6 +142,7 @@ namespace UpdateOrchestratorStop
                 tmr_stop.Enabled = true;
             }
             checkAndStopSvc(_SvcName);
+            disableScheduledTasks();
         }
 
         private void button1_Click_1(object sender, EventArgs e) {
