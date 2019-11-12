@@ -95,9 +95,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="icons8-software-installer-96.ico" />
-    <Content Include="PsExec.exe">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -5,119 +5,30 @@ using System.Linq;
 using System.Windows.Forms;
 using Microsoft.Win32;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
+using System.Xml;
 
 namespace UpdateOrchestratorStop
 {
     public partial class Form1 : Form
     {
+        [DllImport("PowrProf.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
+        public static extern bool SetSuspendState(bool hibernate, bool forceCritical, bool disableWakeEvent);
+
         String exePath = System.Reflection.Assembly.GetEntryAssembly().Location;
         ServiceInstaller SvcInstaller = new ServiceInstaller();
         String _SvcName = "UsoSvc";
+        String wakeSourceCommand = @"qe System /q:"" *[System[Provider[@Name = 'Microsoft-Windows-Power-Troubleshooter']]]"" /rd:true /c:1 /f:xml";
 
         public Form1() {
-            //SystemEvents.PowerModeChanged += OnPowerChange;
             InitializeComponent();
+            tmr_monitorWakeup.Enabled = cb_MonitorWake.Checked;
         }
 
-        private void OnPowerChange(object s, PowerModeChangedEventArgs e) {
-            switch (e.Mode) {
-                case PowerModes.StatusChange:
-                    break;
-                case PowerModes.Resume:
-                    break;
-                case PowerModes.Suspend:
-                    if (cb_MonitorSuspend.Checked) {
-                        checkAndStopSvc(_SvcName);
-                    }
-                    if (cb_monitorScheduledTasks.Checked) {
-                        disableScheduledTasks();
-                    }
-                    break;
-            }
-        }
-
-        public static bool serviceExists(string ServiceName) {
-            return ServiceController.GetServices().Any(serviceController => serviceController.ServiceName.Equals(ServiceName));
-        }
-
-        public static String GetServiceStatus(string serviceName) {
-            if (serviceExists(serviceName)) {
-                ServiceController sc = new ServiceController(serviceName);
-
-                sc.Refresh();
-                switch (sc.Status) {
-                    case ServiceControllerStatus.Running:
-                        return "Running";
-                    case ServiceControllerStatus.Stopped:
-                        return "Stopped";
-                    case ServiceControllerStatus.Paused:
-                        return "Paused";
-                    case ServiceControllerStatus.StopPending:
-                        return "Stopping";
-                    case ServiceControllerStatus.StartPending:
-                        return "Starting";
-                    default:
-                        return "Status Changing";
-                }
-            } else {
-                return "Service not installed";
-            }
-        }
-
-        public static void StopService(string serviceName, int timeoutMilliseconds, Boolean bypassMsg = false) {
-            if (serviceExists(serviceName)) {
-                ServiceController service = new ServiceController(serviceName);
-                try {
-                    TimeSpan timeout = TimeSpan.FromMilliseconds(timeoutMilliseconds);
-
-                    service.Stop();
-                    service.WaitForStatus(ServiceControllerStatus.Stopped, timeout);
-                } catch {
-                    // ...
-                }
-            } else {
-                if (!bypassMsg) {
-                    MessageBox.Show("Service does not exist");
-                }
-            }
-        }
-
-        public static void StartService(string serviceName, int timeoutMilliseconds) {
-            if (serviceExists(serviceName)) {
-                ServiceController service = new ServiceController(serviceName);
-                try {
-                    TimeSpan timeout = TimeSpan.FromMilliseconds(timeoutMilliseconds);
-
-                    service.Start();
-                    service.WaitForStatus(ServiceControllerStatus.Running, timeout);
-                } catch {
-                    // ...
-                }
-            } else {
-                MessageBox.Show("Service does not exist");
-            }
-        }
-
-        private void button1_Click(object sender, EventArgs e) {
-            tmr_stop.Enabled = false;
-            if (serviceExists(_SvcName)) {
-                StartService(_SvcName, 10000);
-            }
-            disableScheduledTasks();
-        }
-
-        private Boolean checkAndStopSvc(String svcName) {
-            if (serviceExists(svcName) && GetServiceStatus(_SvcName) == "Running") {
-                StopService(svcName, 10000);
-            }
-            return GetServiceStatus(_SvcName) == "Running";
-        }
-
-        private void disableScheduledTasks() {
-            // psexec.exe -i -s "%SystemRoot%\system32\WindowsPowerShell\v1.0\powershell.exe" "Get-ScheduledTask -TaskPath "\Microsoft\Windows\UpdateOrchestrator\" | Disable-ScheduledTask"
-            String args = "-i -s '%SystemRoot%\\system32\\WindowsPowerShell\\v1.0\\powershell.exe' 'Get-ScheduledTask -TaskPath '\\Microsoft\\Windows\\UpdateOrchestrator\\' | Disable-ScheduledTask'";
+        private string getLastWakeInfo() {
+            String args = @"qe System /q:"" *[System[Provider[@Name = 'Microsoft-Windows-Power-Troubleshooter']]]"" /rd:true /c:1 /f:xml";
             ProcessStartInfo psi = new ProcessStartInfo();
-            psi.FileName = "psexec.exe";
+            psi.FileName = "wevtutil.exe";
             psi.UseShellExecute = false;
             psi.CreateNoWindow = true;
             psi.RedirectStandardOutput = true;
@@ -125,32 +36,9 @@ namespace UpdateOrchestratorStop
             psi.RedirectStandardInput = true;
             psi.Arguments = args;
             Process proc = Process.Start(psi);
-            //System.Diagnostics.Process.Start("psexec.exe", args);
-        }
-
-        private void timer1_Tick(object sender, EventArgs e) {
-            String svcName = _SvcName;
-            while (checkAndStopSvc(svcName)) {
-                Thread.Sleep(500);
-                checkAndStopSvc(svcName);
-            };
-            disableScheduledTasks();
-        }
-
-        private void btnStop_Click(object sender, EventArgs e) {
-            if (cb_ToggleTimer.Checked) {
-                tmr_stop.Enabled = true;
-            }
-            checkAndStopSvc(_SvcName);
-            disableScheduledTasks();
-        }
-
-        private void button1_Click_1(object sender, EventArgs e) {
-
-        }
-
-        private void btn_svcInstall_Click(object sender, EventArgs e) {
-
+            proc.WaitForExit(2000);
+            String strOutput = proc.StandardOutput.ReadToEnd();
+            return strOutput;
         }
 
         private void Form1_Resize(object sender, EventArgs e) {
@@ -164,32 +52,6 @@ namespace UpdateOrchestratorStop
             Show();
             this.WindowState = FormWindowState.Normal;
             notifyIcon1.Visible = false;
-        }
-
-        private void Form1_Load(object sender, EventArgs e) {
-
-        }
-
-        private void cb_MonitorSuspend_CheckStateChanged(object sender, EventArgs e) {
-            
-        }
-
-        private void cb_MonitorSuspend_CheckedChanged(object sender, EventArgs e) {
-            if (cb_MonitorSuspend.Checked) {
-                SystemEvents.PowerModeChanged -= OnPowerChange;
-                SystemEvents.PowerModeChanged += OnPowerChange;
-            } else {
-                SystemEvents.PowerModeChanged -= OnPowerChange;
-            }
-        }
-
-        private void tmr_suspendMonitor_Tick(object sender, EventArgs e) {
-            if (cb_MonitorSuspend.Checked) {
-                SystemEvents.PowerModeChanged -= OnPowerChange;
-                SystemEvents.PowerModeChanged += OnPowerChange;
-            } else {
-                SystemEvents.PowerModeChanged -= OnPowerChange;
-            }
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
@@ -215,6 +77,32 @@ namespace UpdateOrchestratorStop
                 " - The software could include technical or other mistakes, inaccuracies or typographical errors.\n" +
                 " - The software may be out of date, and we make no commitment to update such materials.\n" +
                 " - We assume no responsibility for errors or omissions in the software or documentation available from this software. In no event shall we be liable to you or any third parties for any special, punitive, incidental, indirect or consequential damages of any kind, or any damages whatsoever, including, without limitation, those resulting from loss of use, lost data or profits, or any liability, arising out of or in connection with the use of this software or any material linked to from this software.");
+        }
+
+        private void cb_ToggleTimer_CheckedChanged(object sender, EventArgs e) {
+
+        }
+
+        private void cb_MonitorWake_CheckedChanged(object sender, EventArgs e) {
+            tmr_monitorWakeup.Enabled = cb_MonitorWake.Checked;
+        }
+
+
+        private void button1_Click_2(object sender, EventArgs e) {
+            String xml = getLastWakeInfo();
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(xml);
+            String path = "//*[local-name()='Event']/*[local-name()='EventData']/*[local-name()='Data'][@Name='WakeSourceText']";
+            XmlNode root = doc.DocumentElement;
+            XmlNode node = root.SelectSingleNode(path);
+            MessageBox.Show(node.InnerText);
+        }
+
+        private void tmr_monitorWakeup_Tick(object sender, EventArgs e) {
+            String WakeInfo = getLastWakeInfo();
+            if (WakeInfo.Contains("UpdateOrchestrator")) {
+                SetSuspendState(false, true, true);
+            }
         }
     }
 }
