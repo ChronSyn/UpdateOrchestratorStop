@@ -1,5 +1,5 @@
 ﻿# UpdateOrchestratorStop
-[ALPHA] Stops Windows Update from waking up your PC (or at least, it tries to)
+Puts Windows back to sleep if it's woken because of Windows update (UpdateOrchestrator).
 
 ##
 
@@ -11,19 +11,19 @@ Windows 10 decides to wake up the PC to check for updates. This can happen at an
 
 Microsoft: Your UX on this is stressful, and even dangerous.
 
-Stressful: Being woken up at 1:30am because my PC has decided to wake itself up and I now have to put it back to sleep if I want to get to sleep again, knowing that I have to be up for work at 6am. I already have a troublesome sleep pattern, so you're making the situation worse.
+Stressful: Being woken up at 1:30am (or 3am, or any other time) because my PC has decided to wake itself up and I now have to put it back to sleep if I want to get to sleep again, knowing that I have to be up for work at 6am. I already have a troublesome sleep pattern, so you're making the situation worse.
 
 Dangerous: Finding a laptop inside a bag has woken itself from sleep and is now overheating, potentially starting a fire.
 
 #### The solution
-An open source project that runs on any Windows PC with .net 3.5 or later that will attempt to put your PC back into sleep mode almost immediately if the update orchestrator wakes it.
+An open source project that runs on any Windows PC with .net 3.5 or later that will attempt to put your PC back into sleep mode almost immediately if the update orchestrator wakes it. It won't attempt to do this if any other source wakes the PC, such as a USB device (as some people use their keyboard or mouse to wake their PC, and others have LAN setups to trigger based on IoT events).
 
 This means that it doesn't affect the regular use or functionality of Windows update, but that it won't leave your PC running for extended time periods after waking it.
 
-Stopping the waking entirely wasn't feasible and even after testing, I was not able to get it successfully working.
+Stopping the waking entirely wasn't feasible and even after testing, I was not able to get it successfully working. Hopefully, forcing Windows to sleep after waking is acceptable.
 
 #### Usage
-This program runs as a desktop app and can be minimized to the notification area. The checkbox controls enabling and disabling monitoring.
+This program runs as a desktop app and can be minimized to the notification area. The checkbox controls enabling and disabling monitoring and functionality.
 
 ##
 
